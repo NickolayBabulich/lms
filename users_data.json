@@ -1,0 +1,22 @@
+[
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "password": "metallica",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-11-16T04:52:58.010Z",
+      "email": "james_hatfild@lms.com",
+      "phone": "88003336666",
+      "country": "Canada",
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

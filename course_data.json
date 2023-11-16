@@ -1,0 +1,100 @@
+[
+  {
+    "model": "course.course",
+    "pk": 3,
+    "fields": {
+      "title": "Django for middle level",
+      "preview": "",
+      "description": "Really hard course"
+    }
+  },
+  {
+    "model": "course.course",
+    "pk": 4,
+    "fields": {
+      "title": "JScript for frontend developer",
+      "preview": "",
+      "description": "BestSeller"
+    }
+  },
+  {
+    "model": "course.lesson",
+    "pk": 1,
+    "fields": {
+      "title": "Chapter 1 - Start with Django",
+      "description": "This is introduction",
+      "preview": "",
+      "link_to_video": null,
+      "course": 3
+    }
+  },
+  {
+    "model": "course.lesson",
+    "pk": 2,
+    "fields": {
+      "title": "Chapter 2 - What about environment?",
+      "description": "Chapter about main settings",
+      "preview": "",
+      "link_to_video": null,
+      "course": 3
+    }
+  },
+  {
+    "model": "course.lesson",
+    "pk": 4,
+    "fields": {
+      "title": "Chapter 3 - Who is who?",
+      "description": "About start project",
+      "preview": "",
+      "link_to_video": null,
+      "course": 3
+    }
+  },
+  {
+    "model": "course.lesson",
+    "pk": 5,
+    "fields": {
+      "title": "Chapter 1 - JS it's so funny!",
+      "description": "Introduction about JS",
+      "preview": "",
+      "link_to_video": null,
+      "course": 4
+    }
+  },
+  {
+    "model": "course.payments",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "payment_day": "2023-11-16",
+      "paid_course": 3,
+      "paid_lesson": null,
+      "payment_amount": 1200,
+      "payment_method": "1"
+    }
+  },
+  {
+    "model": "course.payments",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "payment_day": "2022-11-11",
+      "paid_course": 3,
+      "paid_lesson": 1,
+      "payment_amount": 2350,
+      "payment_method": "2"
+    }
+  },
+  {
+    "model": "course.payments",
+    "pk": 3,
+    "fields": {
+      "user": 2,
+      "payment_day": "2023-10-23",
+      "paid_course": 3,
+      "paid_lesson": 4,
+      "payment_amount": 150,
+      "payment_method": "1"
+    }
+  }
+]
