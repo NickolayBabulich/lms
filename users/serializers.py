@@ -5,8 +5,8 @@ from course.serializers import PaymentsSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
-    payments = PaymentsSerializer(source='usr', many=True)
+
 
     class Meta:
         model = User
-        fields = ('email', 'phone', 'country', 'avatar', 'payments',)
+        fields = ('email', 'phone', 'country', 'avatar',)

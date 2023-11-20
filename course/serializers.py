@@ -23,9 +23,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_number_of_lessons(instance):
-        if instance.lesson.count():
-            return instance.lesson.count()
-        return 0
+        return instance.lesson.count()
 
 
 class PaymentsSerializer(serializers.ModelSerializer):
