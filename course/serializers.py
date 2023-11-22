@@ -1,11 +1,17 @@
 from rest_framework import serializers
-from course.models import Course, Lesson, Payments
+from course.models import Course, Lesson, Payments, Subscription
+from course.validators import LinkToVideoValidator
+from users.models import User
+from rest_framework.relations import SlugRelatedField
 
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = '__all__'
+        validators = [
+            LinkToVideoValidator(field='link_to_video')
+        ]
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -16,6 +22,10 @@ class CourseSerializer(serializers.ModelSerializer):
     number_of_lessons = serializers.SerializerMethodField()
 
     lessons = LessonSerializer(source='lesson', many=True)
+    subscription = serializers.SerializerMethodField()
+
+    def get_subscription(self, instance):
+        return Subscription.objects.filter(course=instance, user=self.context['request'].user).exists()
 
     class Meta:
         model = Course
@@ -31,4 +41,13 @@ class PaymentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payments
+        fields = '__all__'
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    user = SlugRelatedField(slug_field='email', queryset=User.objects.all())
+    course = SlugRelatedField(slug_field='title', queryset=Course.objects.all())
+
+    class Meta:
+        model = Subscription
         fields = '__all__'

@@ -36,7 +36,8 @@ class Lesson(models.Model):
 
 
 class Payments(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', related_name='usr', **NULLABLE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', related_name='usr',
+                             **NULLABLE)
     payment_day = models.DateField(verbose_name='Дата оплаты')
     paid_course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Оплаченный курс',
                                     related_name='paid_course',
@@ -47,3 +48,15 @@ class Payments(models.Model):
     payment_amount = models.PositiveIntegerField(verbose_name='Сумма оплаты')
     payment_method = models.CharField(choices=[('1', 'Cash'), ('2', 'Transfer to account')], default='1',
                                       verbose_name='Способ оплаты')
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Подписчик')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс подписки')
+
+    def __str__(self):
+        return f'{self.user} - {self.course}'
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
