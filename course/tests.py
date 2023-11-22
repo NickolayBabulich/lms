@@ -96,7 +96,7 @@ class LessonTestCase(APITestCase):
         self.assertEqual(Lesson.objects.count(), 0)
 
 
-class SubscriptionAPITestCase(APITestCase):
+class SubscriptionTestCase(APITestCase):
     """ Основные настройки тестов подписки """
     def setUp(self):
         self.user = User.objects.create(
@@ -118,7 +118,7 @@ class SubscriptionAPITestCase(APITestCase):
             course=self.course,
         )
 
-    def test_subscription_list(self):
+    def test_get_subscription_list(self):
         """ Тест получения списка подписки """
         response = self.client.get(reverse('course:subscription_list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
