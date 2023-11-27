@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from course.models import Course, Lesson, Payments, Subscription
 from course.validators import LinkToVideoValidator
+
 from users.models import User
 from rest_framework.relations import SlugRelatedField
 
@@ -37,11 +38,17 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class PaymentsSerializer(serializers.ModelSerializer):
-    payment_user = serializers.CharField(source='user.email')
+    # payment_user = serializers.CharField(source='user.email')
 
     class Meta:
         model = Payments
         fields = '__all__'
+
+
+class PaymentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payments
+        fields = ('paid_course', 'payment_amount', 'payment_method')
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

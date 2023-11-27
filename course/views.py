@@ -1,13 +1,15 @@
 from rest_framework import viewsets, generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
-from rest_framework.permissions import AllowAny
 
 from course.models import Course, Lesson, Payments, Subscription
 
-from course.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer, SubscriptionSerializer
+from course.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer, SubscriptionSerializer, \
+    PaymentCreateSerializer
 from course.permissions import IsNotModer, IsNotModerForView
 from course.paginators import CoursePaginator, LessonPaginator
+
+from services import get_session_with_pay
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -41,6 +43,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     pagination_class = LessonPaginator
+
     # permission_classes = [AllowAny]
 
     def get_queryset(self):
@@ -64,6 +67,16 @@ class LessonDestroyAPIView(generics.DestroyAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsNotModer]
+
+
+class PaymentCreateAPIVIew(generics.CreateAPIView):
+    serializer_class = PaymentCreateSerializer
+
+    def perform_create(self, serializer):
+        payment = serializer.save()
+        payment.user = self.request.user
+        payment.session = get_session_with_pay(payment).id
+        payment.save()
 
 
 class PaymentsListAPIView(generics.ListAPIView):
@@ -91,5 +104,3 @@ class SubscriptionDestroyAPIView(generics.DestroyAPIView):
 
     def get_queryset(self):
         return Subscription.objects.filter(user=self.request.user)
-
-
