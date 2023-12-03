@@ -8,8 +8,9 @@ from course.serializers import CourseSerializer, LessonSerializer, PaymentsSeria
     PaymentCreateSerializer
 from course.permissions import IsNotModer, IsNotModerForView
 from course.paginators import CoursePaginator, LessonPaginator
+from course.tasks import check_add_lesson
 
-from services import get_session_with_pay
+from course.services import get_session_with_pay
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -35,9 +36,10 @@ class LessonCreateAPIView(generics.CreateAPIView):
     permission_classes = [IsNotModer]
 
     def perform_create(self, serializer):
-        new_lesson = serializer.save()
-        new_lesson.owner = self.request.user
-        new_lesson.save()
+
+        course_id = serializer.save(owner=self.request.user).course.id
+        lesson_id = serializer.save().id
+        check_add_lesson.delay(course_id, lesson_id)
 
 
 class LessonListAPIView(generics.ListAPIView):
@@ -90,6 +92,13 @@ class PaymentsListAPIView(generics.ListAPIView):
 
 class SubscriptionCreateAPIView(generics.CreateAPIView):
     serializer_class = SubscriptionSerializer
+
+    def create(self, request, *args, **kwargs):
+        subscriptions = Subscription.objects.filter(user=self.request.user)
+        for subscription in subscriptions:
+            if subscription.course.title == request.data.get('course'):
+                raise PermissionError('Вы уже подписаны на этот курс')
+        return super().create(request, *args, **kwargs)
 
 
 class SubscriptionListAPIView(generics.ListAPIView):
